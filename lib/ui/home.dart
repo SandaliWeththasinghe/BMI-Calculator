@@ -15,9 +15,58 @@ class HomeState extends State<Home> {
   double result = 0.0;
   String weightCategory = "";
 
-  void _resultBMI() {
-    setState(() {
-      result = calculateBMI(_weightController.text, _heightController.text);
+  // void _resultBMI() {
+  //   setState(() {
+  //     result = calculateBMI(_weightController.text, _heightController.text);
+
+      // if (result < 18.5) {
+      //   weightCategory = "Underweight";
+      // } else if (18.5 <= result && result < 24.9) {
+      //   weightCategory = "Normal";
+      // } else if (24.9 <= result && result < 29.9) {
+      //   weightCategory = "Overweight";
+      // } else if (29.9 <= result) {
+      //   weightCategory = "Obese";
+      // } else {
+      //   weightCategory = "Wrong Inpt";
+      // } 
+
+  //   });
+    
+  // }
+
+  // double calculateBMI( String weight, String height) {
+
+  // if ((weight.isNotEmpty || double.parse(weight) > 0) && 
+  //   (height.isNotEmpty || double.parse(height) > 0)) {
+
+  //     return double.parse(weight) / (double.parse(height) * double.parse(height));
+  
+  //   } else {
+  //     print("Wrong !");
+  //     return double.parse("0.0");
+  //   }
+
+  // }
+
+  String _finalResult;
+
+  void _calculateBMI() {
+
+    setState(() {      
+    
+      int age = int.parse(_ageController.text);
+      double height = double.parse(_heightController.text);
+      double weight = double.parse(_weightController.text);
+
+      if((_ageController.text.isNotEmpty || age > 0) 
+        && ((_heightController.text.isNotEmpty || height > 0) 
+          && (_weightController.text.isNotEmpty || weight > 0))) {
+
+            result = weight / (height * height); //BMI
+          } else {
+            result = 0.0;
+          }
 
       if (result < 18.5) {
         weightCategory = "Underweight";
@@ -30,23 +79,9 @@ class HomeState extends State<Home> {
       } else {
         weightCategory = "Wrong Inpt";
       } 
-
     });
-    
-  }
 
-  double calculateBMI( String weight, String height) {
-
-  if ((weight.isNotEmpty || double.parse(weight) > 0) && 
-    (height.isNotEmpty || double.parse(height) > 0)) {
-
-      return double.parse(weight) / (double.parse(height) * double.parse(height));
-  
-    } else {
-      print("Wrong !");
-      return double.parse("0.0");
-    }
-
+    _finalResult = "Your BMI: ${result.toStringAsFixed(1)}";
   }
 
   @override
@@ -110,8 +145,8 @@ class HomeState extends State<Home> {
 
                   // Calculate button
                   new RaisedButton(
-                    // onPressed:_calculateBMI,
-                    onPressed:_resultBMI, 
+                    onPressed:_calculateBMI,
+                    // onPressed:_resultBMI, 
                     // onPressed:() => debugPrint(""),
                     color: Colors.pinkAccent,
                     child: new Text(
@@ -129,8 +164,9 @@ class HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text(
-                  "Your BMI: " + result.toStringAsFixed(1), // Enter text
+                  // "Your BMI: " + result.toStringAsFixed(1), // Enter text
                   // "Your BMI: $result", // Enter text
+                  "$_finalResult",
 
                   style: new TextStyle(
                     color: Colors.blueAccent,
