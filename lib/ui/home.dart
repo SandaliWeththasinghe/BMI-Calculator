@@ -13,10 +13,24 @@ class HomeState extends State<Home> {
   final TextEditingController _heightController = new TextEditingController();
   final TextEditingController _weightController = new TextEditingController();
   double result = 0.0;
+  String weightCategory = "";
 
   void _resultBMI() {
     setState(() {
       result = calculateBMI(_weightController.text, _heightController.text);
+
+      if (result < 18.5) {
+        weightCategory = "Underweight";
+      } else if (18.5 <= result && result < 24.9) {
+        weightCategory = "Normal";
+      } else if (24.9 <= result && result < 29.9) {
+        weightCategory = "Overweight";
+      } else if (29.9 <= result) {
+        weightCategory = "Obese";
+      } else {
+        weightCategory = "Wrong Inpt";
+      } 
+
     });
     
   }
@@ -27,32 +41,13 @@ class HomeState extends State<Home> {
     (height.isNotEmpty || double.parse(height) > 0)) {
 
       return double.parse(weight) / (double.parse(height) * double.parse(height));
-      
+  
     } else {
       print("Wrong !");
       return double.parse("0.0");
     }
 
   }
-
-  // void _calculateBMI() {
-
-  //   setState(() {      
-    
-  //     int age = int.parse(_ageController.text);
-  //     double height = double.parse(_heightController.text);
-  //     double weight = double.parse(_weightController.text);
-
-  //     if((_ageController.text.isNotEmpty || age > 0) 
-  //       && ((_heightController.text.isNotEmpty || height > 0) 
-  //         && (_weightController.text.isNotEmpty || weight > 0))) {
-
-  //           result = weight / (height * height); //BMI
-  //         } else {
-  //           result = 0.0;
-  //         }
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +129,9 @@ class HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text(
-                  "Your BMI: $result", // Enter text
+                  "Your BMI: " + result.toStringAsFixed(1), // Enter text
+                  // "Your BMI: $result", // Enter text
+
                   style: new TextStyle(
                     color: Colors.blueAccent,
                     fontStyle: FontStyle.italic,
@@ -146,7 +143,7 @@ class HomeState extends State<Home> {
                 new Padding(padding: const EdgeInsets.all(5.0)),
 
                 new Text(
-                  "Weight Catagory ",
+                  "Weight Catagory: $weightCategory",
                   style: new TextStyle(
                     color: Colors.pinkAccent,
                     fontWeight: FontWeight.w500,
