@@ -5,8 +5,8 @@ class Home extends StatefulWidget {
   State<StatefulWidget> createState() {
     return new HomeState();
   }
-}
-    
+}   
+
 class HomeState extends State<Home> {
 
   final TextEditingController _ageController = new TextEditingController();
@@ -14,48 +14,45 @@ class HomeState extends State<Home> {
   final TextEditingController _weightController = new TextEditingController();
   double result = 0.0;
 
-  // double _showResultBMI = 0.0;
+  void _resultBMI() {
+    setState(() {
+      result = calculateBMI(_weightController.text, _heightController.text);
+    });
+    
+  }
 
-  // void _resultBMI() {
-  //   setState(() {
-  //     result = calculateBMI(_weightController.text, _heightController.text);
+  double calculateBMI( String weight, String height) {
+
+  if ((weight.isNotEmpty || double.parse(weight) > 0) && 
+    (height.isNotEmpty || double.parse(height) > 0)) {
+
+      return double.parse(weight) / (double.parse(height) * double.parse(height));
+      
+    } else {
+      print("Wrong !");
+      return double.parse("0.0");
+    }
+
+  }
+
+  // void _calculateBMI() {
+
+  //   setState(() {      
+    
+  //     int age = int.parse(_ageController.text);
+  //     double height = double.parse(_heightController.text);
+  //     double weight = double.parse(_weightController.text);
+
+  //     if((_ageController.text.isNotEmpty || age > 0) 
+  //       && ((_heightController.text.isNotEmpty || height > 0) 
+  //         && (_weightController.text.isNotEmpty || weight > 0))) {
+
+  //           result = weight / (height * height); //BMI
+  //         } else {
+  //           result = 0.0;
+  //         }
   //   });
   // }
-
-  // double calculateBMI( String weight, String height) {
-
-  //   if ((int.parse(weight).toString().isNotEmpty ||
-  //   int.parse(weight) > 0) && 
-  //   (int.parse(height).toString().isNotEmpty || 
-  //   int.parse(height) > 0)) {
-
-  //     return int.parse(weight) / (int.parse(height) * int.parse(height));
-      
-  //   } else {
-  //     print("Wrong !");
-  //     return double.parse("0.0");
-  //   }
-
-  // }
-
-  void _calculateBMI() {
-
-    setState(() {      
-    
-      int age = int.parse(_ageController.text);
-      double height = double.parse(_heightController.text);
-      double weight = double.parse(_weightController.text);
-
-      if((_ageController.text.isNotEmpty || age > 0) 
-        && ((_heightController.text.isNotEmpty || height > 0) 
-          && (_weightController.text.isNotEmpty || weight > 0))) {
-
-            result = weight / (height * height); //BMI
-          } else {
-            result = 0.0;
-          }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,10 +113,11 @@ class HomeState extends State<Home> {
 
                   new Padding(padding: EdgeInsets.all(5.0)),
 
-                  // Calculatee button
+                  // Calculate button
                   new RaisedButton(
-                    onPressed:_calculateBMI, 
-                    // onPressed:() => debugPrint("button pressed"),
+                    // onPressed:_calculateBMI,
+                    onPressed:_resultBMI, 
+                    // onPressed:() => debugPrint(""),
                     color: Colors.pinkAccent,
                     child: new Text(
                       "Calculate",
@@ -141,7 +139,7 @@ class HomeState extends State<Home> {
                     color: Colors.blueAccent,
                     fontStyle: FontStyle.italic,
                     fontSize: 19.9,
-                    // fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
 
